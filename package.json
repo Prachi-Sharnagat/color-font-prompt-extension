@@ -11,7 +11,8 @@
     "compile": "tsc --noEmit",
     "test": "vitest run",
     "check": "npm run compile && npm run test && npm run build",
-    "postinstall": "wxt prepare"
+    "postinstall": "wxt prepare",
+    "fixtures": "node scripts/serve-fixtures.mjs"
   },
   "devDependencies": {
     "typescript": "~5.9",

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PickType Studio</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="studio">
+      <header class="studio__header">
+        <div>
+          <h1 class="studio__title">Recreation Prompt</h1>
+          <p class="studio__target" id="target">No page selected</p>
+        </div>
+        <button id="btn-analyze" class="primary" type="button">Analyze page</button>
+      </header>
+
+      <p id="notice" class="notice" role="status" hidden></p>
+
+      <section aria-labelledby="steps-title">
+        <h2 id="steps-title" class="studio__h2">Analysis</h2>
+        <ol id="steps" class="steps"></ol>
+      </section>
+
+      <section id="results" class="results" aria-labelledby="results-title" hidden>
+        <div class="results__header">
+          <h2 id="results-title" class="studio__h2">Results (Phase A preview)</h2>
+          <button id="btn-copy-json" class="secondary" type="button">Copy JSON</button>
+        </div>
+        <details open>
+          <summary>Page structure</summary>
+          <pre id="out-structure" class="code"></pre>
+        </details>
+        <details open>
+          <summary>Design tokens</summary>
+          <pre id="out-tokens" class="code"></pre>
+        </details>
+        <details open>
+          <summary>CSS motion</summary>
+          <pre id="out-motion" class="code"></pre>
+        </details>
+      </section>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fixture: CSS-only landing page</title>
+    <!--
+      Test fixture for the recreation-prompt analyzer (structure, tokens, CSS motion).
+      Expected detections are listed in fixtures/README.md.
+    -->
+    <style>
+      :root {
+        --bg: #0b0d12;
+        --surface: #151922;
+        --text: #e8ebf2;
+        --muted: #9aa3b2;
+        --accent: #7c5cff;
+        --radius: 16px;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      }
+      .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+      /* Sticky header */
+      .site-header {
+        position: sticky; top: 0; z-index: 50;
+        background: rgba(11, 13, 18, 0.85);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid #222838;
+      }
+      .site-header .container { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+      .logo { font-weight: 800; letter-spacing: 0.02em; }
+      .nav { display: flex; gap: 24px; }
+      .nav a { color: var(--muted); text-decoration: none; transition: color 0.2s ease; }
+      .nav a:hover { color: var(--text); }
+
+      /* Buttons */
+      .btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 12px 20px; border-radius: 999px; border: 0;
+        background: var(--accent); color: #fff; font-weight: 600; text-decoration: none;
+        box-shadow: 0 8px 24px rgba(124, 92, 255, 0.35);
+        transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease;
+      }
+      .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(124, 92, 255, 0.5); }
+      .btn:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+      .btn--ghost { background: transparent; box-shadow: none; border: 1px solid #2a3142; }
+
+      /* Hero */
+      .hero { padding: 96px 0 80px; }
+      .hero .container { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; }
+      .eyebrow { color: var(--accent); font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; }
+      .hero h1 { font-size: 56px; line-height: 1.1; margin: 12px 0 20px; letter-spacing: -0.02em; }
+      .hero p { color: var(--muted); font-size: 18px; margin: 0 0 32px; }
+      .hero-actions { display: flex; gap: 12px; }
+      .hero-art {
+        aspect-ratio: 4 / 3; border-radius: 24px;
+        background: linear-gradient(135deg, #7c5cff 0%, #00d4ff 100%);
+        position: relative; overflow: hidden;
+      }
+      .blob {
+        position: absolute; width: 140px; height: 140px; border-radius: 50%;
+        background: rgba(255, 255, 255, 0.25);
+        animation: float 6s ease-in-out infinite alternate;
+      }
+      .blob:nth-child(1) { top: 15%; left: 10%; }
+      .blob:nth-child(2) { top: 50%; left: 55%; animation-delay: -2s; }
+      .blob:nth-child(3) { top: 20%; left: 70%; width: 80px; height: 80px; animation-delay: -4s; }
+      @keyframes float {
+        from { transform: translateY(0) scale(1); }
+        to { transform: translateY(-24px) scale(1.08); }
+      }
+
+      /* Reveal on load */
+      .reveal { animation: fade-up 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+      .reveal-2 { animation-delay: 0.15s; }
+      @keyframes fade-up {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: none; }
+      }
+
+      /* Features grid with repeated cards */
+      .features { padding: 80px 0; background: var(--surface); }
+      .section-title { font-size: 36px; line-height: 1.2; margin: 0 0 40px; text-align: center; }
+      .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+      .card {
+        background: #1b2030; border: 1px solid #262d40; border-radius: var(--radius);
+        padding: 24px; transition: transform 0.3s ease, border-color 0.3s ease;
+      }
+      .card:hover { transform: translateY(-6px); border-color: var(--accent); }
+      .card .icon { width: 40px; height: 40px; border-radius: 12px; background: rgba(124, 92, 255, 0.2); margin-bottom: 16px; }
+      .card h3 { font-size: 20px; margin: 0 0 8px; }
+      .card p { color: var(--muted); margin: 0; font-size: 15px; }
+
+      /* Showcase with image placeholders */
+      .showcase { padding: 80px 0; }
+      .showcase .row { display: flex; gap: 32px; align-items: center; }
+      .shot { flex: 1; aspect-ratio: 16 / 9; border-radius: var(--radius); background: #222838; display: block; width: 100%; }
+      .showcase .copy { flex: 1; }
+
+      /* Pricing */
+      .pricing { padding: 80px 0; background: var(--surface); }
+      .plans { display: flex; gap: 24px; justify-content: center; }
+      .plan { flex: 0 1 320px; padding: 32px; border-radius: var(--radius); background: #1b2030; border: 1px solid #262d40; }
+      .plan--featured { border-color: var(--accent); box-shadow: 0 20px 60px rgba(124, 92, 255, 0.25); transform: scale(1.03); }
+      .price { font-size: 44px; font-weight: 800; }
+
+      footer { padding: 48px 0; color: var(--muted); border-top: 1px solid #222838; font-size: 14px; }
+      footer .container { display: flex; justify-content: space-between; }
+
+      @media (max-width: 1023.98px) {
+        .hero .container { grid-template-columns: 1fr; }
+        .grid { grid-template-columns: repeat(2, 1fr); }
+      }
+      @media (max-width: 639.98px) {
+        .grid { grid-template-columns: 1fr; }
+        .plans, .showcase .row { flex-direction: column; }
+        .hero h1 { font-size: 40px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .blob, .reveal { animation: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <div class="logo">Fixturely</div>
+        <nav class="nav"><a href="#features">Features</a><a href="#showcase">Showcase</a><a href="#pricing">Pricing</a></nav>
+        <a class="btn" href="#pricing">Get started</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <div>
+            <div class="eyebrow reveal">New release</div>
+            <h1 class="reveal reveal-2">Build calm interfaces faster than ever</h1>
+            <p class="reveal reveal-2">A test fixture paragraph that describes a product in one or two sentences so the analyzer can count words.</p>
+            <div class="hero-actions">
+              <a class="btn" href="#pricing">Start free trial</a>
+              <a class="btn btn--ghost" href="#showcase">See how it works</a>
+            </div>
+          </div>
+          <div class="hero-art" role="img" aria-label="Decorative gradient">
+            <span class="blob"></span><span class="blob"></span><span class="blob"></span>
+          </div>
+        </div>
+      </section>
+
+      <section class="features" id="features">
+        <div class="container">
+          <h2 class="section-title">Everything you need</h2>
+          <div class="grid">
+            <article class="card"><div class="icon"></div><h3>Fast setup</h3><p>Short description of the first feature for the fixture.</p></article>
+            <article class="card"><div class="icon"></div><h3>Smart layouts</h3><p>Short description of the second feature for the fixture.</p></article>
+            <article class="card"><div class="icon"></div><h3>Live preview</h3><p>Short description of the third feature for the fixture.</p></article>
+            <article class="card"><div class="icon"></div><h3>Team spaces</h3><p>Short description of the fourth feature for the fixture.</p></article>
+            <article class="card"><div class="icon"></div><h3>Version history</h3><p>Short description of the fifth feature for the fixture.</p></article>
+            <article class="card"><div class="icon"></div><h3>Export anywhere</h3><p>Short description of the sixth feature for the fixture.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="showcase" id="showcase">
+        <div class="container">
+          <div class="row">
+            <svg class="shot" viewBox="0 0 16 9" role="img" aria-label="Screenshot placeholder"><rect width="16" height="9" fill="#222838" /></svg>
+            <div class="copy">
+              <h2>Designed for focus</h2>
+              <p>A second fixture paragraph with a different length, used to check text placeholders and the type scale.</p>
+              <a class="btn btn--ghost" href="#pricing">Compare plans</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="pricing" id="pricing">
+        <div class="container">
+          <h2 class="section-title">Simple pricing</h2>
+          <div class="plans">
+            <div class="plan"><h3>Starter</h3><div class="price">$0</div><p>For individuals trying things out.</p><a class="btn btn--ghost" href="#">Choose</a></div>
+            <div class="plan plan--featured"><h3>Pro</h3><div class="price">$12</div><p>For small teams shipping every week.</p><a class="btn" href="#">Choose</a></div>
+            <div class="plan"><h3>Scale</h3><div class="price">$49</div><p>For organizations with many projects.</p><a class="btn btn--ghost" href="#">Choose</a></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container"><span>© Fixturely</span><span>Made for testing</span></div>
+    </footer>
+  </body>
+</html>

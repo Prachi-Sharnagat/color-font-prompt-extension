@@ -17,7 +17,8 @@ const notice = byId<HTMLParagraphElement>('notice');
 const pickerBtn = byId<HTMLButtonElement>('btn-picker');
 const fontBtn = byId<HTMLButtonElement>('btn-font');
 const paletteBtn = byId<HTMLButtonElement>('btn-palette');
-const pageButtons = [pickerBtn, fontBtn, paletteBtn];
+const recreateBtn = byId<HTMLButtonElement>('btn-recreate');
+const pageButtons = [pickerBtn, fontBtn, paletteBtn, recreateBtn];
 const paletteSection = byId<HTMLElement>('palette');
 const paletteList = byId<HTMLUListElement>('palette-list');
 const toastEl = byId<HTMLDivElement>('toast');
@@ -98,7 +99,16 @@ async function showPagePalette(): Promise<void> {
   paletteList.querySelector('button')?.focus();
 }
 
+/** Open the Studio tab for the current page; it uses this tab's activeTab grant. */
+async function openStudio(): Promise<void> {
+  const tab = await getActiveTab();
+  if (tab?.id === undefined) return;
+  await browser.tabs.create({ url: `${browser.runtime.getURL('/studio.html')}?tab=${tab.id}`, index: tab.index + 1 });
+  window.close();
+}
+
 async function init(): Promise<void> {
+  recreateBtn.addEventListener('click', () => void openStudio());
   pickerBtn.addEventListener('click', () => void startTool('picker'));
   fontBtn.addEventListener('click', () => void startTool('font'));
   paletteBtn.addEventListener('click', () => void showPagePalette());
