@@ -59,18 +59,13 @@
 
 ---
 
-## Install
-
-### From the Chrome Web Store
-*Coming soon:* `https://chromewebstore.google.com/detail/<your-extension-id>`
-
 ### From source (development)
 
 **Requirements:** Node.js 20+ and npm (or pnpm).
 
 ```bash
-git clone https://github.com/<your-username>/<your-repo>.git
-cd <your-repo>
+git clone https://github.com/Prachi-Sharnagat/color-font-prompt-extension.git
+
 npm install
 npm run dev
 ```
@@ -81,17 +76,6 @@ Then load the extension in Chrome:
 2. Turn on **Developer mode**
 3. Click **Load unpacked**
 4. Select the `.output/chrome-mv3` folder
-
-### Build for production
-
-```bash
-npm run build
-npm run zip
-```
-
-The zip file is created in `.output/`.
-
----
 
 ## Usage
 
@@ -177,46 +161,9 @@ See [PRIVACY.md](./PRIVACY.md) for the full policy.
 
 ---
 
-## Known limitations
-
-- **Restricted pages:** `chrome://` pages, the Chrome Web Store and PDF viewers can't be analyzed.
-- **Canvas and WebGL text:** fonts drawn on a canvas can't be read.
-- **Cross-origin stylesheets and iframes:** some data is inaccessible and is reported as such rather than guessed.
-- **Estimated vs exact:** without the `debugger` permission, font results are best guesses and are labeled that way.
-- **Bundled animation libraries:** GSAP and Three.js detection (roadmap) only works when the library is reachable from the page.
-
----
-
-## Roadmap
-
-- [x] Color picker with history
-- [x] Font detector with contrast checker
-- [x] Exact font detection via Chrome DevTools Protocol
-- [x] Page palette
-- [ ] design.md generator with CSS and Tailwind export
-- [ ] Recreation prompt: structure, CSS motion, GSAP, Three.js, scroll behavior
-- [ ] Optional AI polish (bring your own API key)
-- [ ] Chrome Web Store release
-
-Update the checkboxes to match what is actually built.
-
----
-
 ## Responsible use
 
 PickType helps you **learn from and rebuild in your own brand**. Generated files contain design tokens and structure only, with placeholders instead of text, logos or images. You are responsible for making sure your use of any output respects the copyright, trademark and terms of the sites you analyze.
-
----
-
-## Contributing
-
-Issues and pull requests are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) first, and run `npm run lint && npm run typecheck && npm test` before opening a PR.
-
----
-
-## License
-
-[MIT](./LICENSE) © `Prachi Sharnagat`
 
 ---
 
