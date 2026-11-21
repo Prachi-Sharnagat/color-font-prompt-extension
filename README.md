@@ -216,10 +216,10 @@ Issues and pull requests are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTI
 
 ## License
 
-[MIT](./LICENSE) © `<your name>`
+[MIT](./LICENSE) © `Prachi Sharnagat`
 
 ---
 
 ## Contact
 
-Questions, bugs or takedown requests: `<your-email>`
+Questions, bugs or takedown requests: `prachisharnagat06@gmail.com`
