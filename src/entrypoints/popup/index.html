@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PickType</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="popup">
+      <header class="popup__header">
+        <h1 class="popup__title">PickType</h1>
+      </header>
+
+      <p id="notice" class="notice" role="status" hidden></p>
+
+      <div class="tools" role="group" aria-label="Tools">
+        <button id="btn-picker" class="tool" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m2 22 1-1h3l9-9" /><path d="M3 21v-3l9-9" /><path d="m15 6 3.4-3.4a2.1 2.1 0 1 1 3 3L18 9l.4.4a2.1 2.1 0 1 1-3 3l-3.8-3.8a2.1 2.1 0 1 1 3-3l.4.4Z" /></svg>
+          <span>Pick Color</span>
+        </button>
+        <button id="btn-font" class="tool" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7V4h16v3" /><path d="M9 20h6" /><path d="M12 4v16" /></svg>
+          <span>Detect Font</span>
+        </button>
+      </div>
+
+      <section class="recent" aria-labelledby="recent-title">
+        <div class="recent__header">
+          <h2 id="recent-title" class="recent__title">Recent colors</h2>
+        </div>
+        <p id="recent-empty" class="recent__empty">Colors you pick will appear here.</p>
+      </section>
+    </main>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>
