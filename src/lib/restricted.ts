@@ -10,7 +10,9 @@ export type RestrictionReason =
   | 'web-store'
   | 'file-no-access'
   | 'pdf'
-  | 'unsupported-scheme';
+  | 'unsupported-scheme'
+  | 'error-page'
+  | 'no-access';
 
 export interface RestrictionResult {
   restricted: boolean;
@@ -79,8 +81,28 @@ export function checkRestricted(
   return { restricted: false };
 }
 
+/**
+ * Map a chrome.scripting.executeScript error to a reason, for pages the URL
+ * check can't predict (error pages, policy-blocked hosts, lost activeTab grant).
+ */
+export function reasonFromInjectionError(message: string): RestrictionReason | undefined {
+  const m = message.toLowerCase();
+  if (m.includes('error page')) return 'error-page';
+  if (m.includes('gallery') || m.includes('webstore')) return 'web-store';
+  if (m.includes('chrome://') || m.includes('chrome-extension://') || m.includes('extensions gallery')) {
+    return 'browser-page';
+  }
+  if (m.includes('file://') || m.includes('file url')) return 'file-no-access';
+  if (m.includes('cannot access') || m.includes('permission')) return 'no-access';
+  return undefined;
+}
+
 export function restrictionMessage(reason: RestrictionReason | undefined): string {
   switch (reason) {
+    case 'error-page':
+      return 'This page didn’t load. Reload it, then try again.';
+    case 'no-access':
+      return 'PickType lost access to this page (it may have navigated, or your organization blocks extensions here). Close this popup and click the PickType icon again.';
     case 'browser-page':
       return 'Chrome doesn’t allow extensions on its built-in pages. Open a regular website to use PickType.';
     case 'web-store':

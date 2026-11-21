@@ -1,5 +1,19 @@
 import { describe, expect, it } from 'vitest';
-import { checkRestricted } from '../src/lib/restricted';
+import { checkRestricted, reasonFromInjectionError } from '../src/lib/restricted';
+
+describe('reasonFromInjectionError', () => {
+  it('maps Chrome injection errors to friendly reasons', () => {
+    expect(reasonFromInjectionError('Frame with ID 0 is showing error page')).toBe('error-page');
+    expect(reasonFromInjectionError('The extensions gallery cannot be scripted.')).toBe('web-store');
+    expect(reasonFromInjectionError('Cannot access a chrome:// URL')).toBe('browser-page');
+    expect(
+      reasonFromInjectionError(
+        'Cannot access contents of the page. Extension manifest must request permission to access the respective host.',
+      ),
+    ).toBe('no-access');
+    expect(reasonFromInjectionError('Something unexpected')).toBeUndefined();
+  });
+});
 
 describe('checkRestricted', () => {
   it('allows regular websites', () => {

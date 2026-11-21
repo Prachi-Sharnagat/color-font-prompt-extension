@@ -25,6 +25,19 @@
         </button>
       </div>
 
+      <button id="btn-palette" class="secondary" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="13.5" cy="6.5" r="1.5" /><circle cx="17.5" cy="10.5" r="1.5" /><circle cx="8.5" cy="7.5" r="1.5" /><circle cx="6.5" cy="12.5" r="1.5" /><path d="M12 2a10 10 0 0 0 0 20c.9 0 1.7-.7 1.7-1.7 0-.4-.2-.8-.4-1.1-.3-.3-.4-.7-.4-1.1 0-.9.8-1.7 1.7-1.7H16a6 6 0 0 0 6-6c0-4.9-4.5-8.4-10-8.4Z" /></svg>
+        <span>Page palette</span>
+      </button>
+
+      <section id="palette" class="palette" aria-labelledby="palette-title" hidden>
+        <div class="recent__header">
+          <h2 id="palette-title" class="recent__title">Page palette</h2>
+          <span class="palette__hint">by usage · click to copy</span>
+        </div>
+        <ul id="palette-list" class="palette__list"></ul>
+      </section>
+
       <section class="recent" aria-labelledby="recent-title">
         <div class="recent__header">
           <h2 id="recent-title" class="recent__title">Recent colors</h2>

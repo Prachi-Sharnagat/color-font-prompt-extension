@@ -36,6 +36,13 @@ export function startMode(mode: ToolMode): void {
     if (active === session) stopMode();
   };
 
+  // If keyboard focus is inside an iframe, key events (Escape!) go to that
+  // frame. Pull focus back to the top document.
+  const focused = document.activeElement;
+  if (focused instanceof HTMLElement && (focused.tagName === 'IFRAME' || focused.tagName === 'FRAME')) {
+    focused.blur();
+  }
+
   try {
     const ui = mountShadowHost(disposer);
     const toolbar = mountToolbar(ui, disposer, {

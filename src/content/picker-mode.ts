@@ -137,7 +137,10 @@ export const pickerMode: ModeDefinition = {
       } catch (error) {
         if (disposer.isDisposed) return;
         const message = error instanceof Error ? error.message : '';
-        if (/quota|per second/i.test(message)) {
+        if (/context invalidated/i.test(message)) {
+          // The extension was reloaded or updated while this page stayed open.
+          toast('PickType was updated. Press Esc, then start it again from the toolbar.');
+        } else if (/quota|per second/i.test(message)) {
           captureQueued = true; // Rate-limited: just try again shortly.
         } else {
           showFallback();
