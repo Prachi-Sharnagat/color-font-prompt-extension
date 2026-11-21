@@ -1,5 +1,6 @@
 import { allFormats, isLight, type ColorFormats, type RGB } from '../lib/color-conversion';
 import { h, icon, ICON_CLOSE } from './dom-helpers';
+import { placeNear } from './position';
 import type { ShadowUI } from './shadow-host';
 
 const ICON_COPY = ['M8 8h12v12H8z', 'M16 8V4H4v12h4'] as const;
@@ -144,16 +145,7 @@ export function showColorCard(ui: ShadowUI, opts: ColorCardOptions): ColorCard {
 
   ui.layer.append(el);
 
-  // Position near the anchor, kept fully inside the viewport.
-  const rect = el.getBoundingClientRect();
-  const margin = 12;
-  let left = opts.x + 16;
-  let top = opts.y + 16;
-  if (left + rect.width > window.innerWidth - margin) left = opts.x - 16 - rect.width;
-  if (top + rect.height > window.innerHeight - margin) top = opts.y - 16 - rect.height;
-  left = Math.max(margin, left);
-  top = Math.max(margin, top);
-  el.style.transform = `translate(${Math.round(left)}px, ${Math.round(top)}px)`;
+  placeNear(el, opts.x, opts.y);
 
   copyButtons[0]?.focus({ preventScroll: true });
 

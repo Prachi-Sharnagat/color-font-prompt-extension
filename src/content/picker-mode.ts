@@ -1,10 +1,12 @@
 import { hexToRgb, rgbToHex, type RGB } from '../lib/color-conversion';
 import { copyText } from '../lib/clipboard';
+import { forwardWheel } from '../lib/dom';
 import { saveRecentColor } from '../lib/storage';
 import { showColorCard, type ColorCard } from '../ui/color-card';
 import { h } from '../ui/dom-helpers';
 import { mountMagnifier } from '../ui/magnifier';
 import { createToaster } from '../ui/toast';
+import { hitBelowLayer, listenKeyboardPointer } from './pointer';
 import { captureViewport, sampleAt, type PixelSource } from './screen-capture';
 import type { ModeDefinition } from './types';
 
@@ -234,37 +236,24 @@ export const pickerMode: ModeDefinition = {
       pickAt(e.clientX, e.clientY);
     });
 
-    // Keyboard: arrows nudge the sample point (Shift = 10px), Enter/Space picks.
+    // Inner scroll containers don't receive wheel events through our layer.
     disposer.listen(
-      window,
-      'keydown',
-      (e) => {
-        if (card || e.composedPath().includes(ui.host)) return;
-        const step = e.shiftKey ? 10 : 1;
-        const moves: Record<string, [number, number]> = {
-          ArrowLeft: [-step, 0],
-          ArrowRight: [step, 0],
-          ArrowUp: [0, -step],
-          ArrowDown: [0, step],
-        };
-        const move = moves[e.key];
-        if (move) {
-          e.preventDefault();
-          e.stopPropagation();
-          const base = pointer ?? { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-          pointer = {
-            x: Math.min(window.innerWidth - 1, Math.max(0, base.x + move[0])),
-            y: Math.min(window.innerHeight - 1, Math.max(0, base.y + move[1])),
-          };
-          queueRender();
-        } else if ((e.key === 'Enter' || e.key === ' ') && pointer) {
-          e.preventDefault();
-          e.stopPropagation();
-          pickAt(pointer.x, pointer.y);
-        }
-      },
-      { capture: true },
+      captureLayer,
+      'wheel',
+      (e) => forwardWheel(e, hitBelowLayer(captureLayer, ui, e.clientX, e.clientY)?.element ?? null),
+      { passive: false },
     );
+
+    // Keyboard: arrows nudge the sample point (Shift = 10px), Enter/Space picks.
+    listenKeyboardPointer(ui, disposer, {
+      isPaused: () => card !== null,
+      getPointer: () => pointer,
+      setPointer: (p) => {
+        pointer = p;
+        queueRender();
+      },
+      onActivate: (p) => pickAt(p.x, p.y),
+    });
 
     // Capture phase catches scrolling of any inner scroll container too.
     disposer.listen(window, 'scroll', onViewportChange, { capture: true, passive: true });
