@@ -27,3 +27,14 @@ export function isContentRequest(value: unknown): value is ContentRequest {
   }
   return false;
 }
+
+/** Messages handled by the background service worker. */
+export type BackgroundRequest = { type: 'pt:capture' };
+
+export type CaptureResponse = { ok: true; dataUrl: string } | { ok: false; error: string };
+
+export function isBackgroundRequest(value: unknown): value is BackgroundRequest {
+  return (
+    typeof value === 'object' && value !== null && (value as { type?: unknown }).type === 'pt:capture'
+  );
+}

@@ -28,9 +28,13 @@
       <section class="recent" aria-labelledby="recent-title">
         <div class="recent__header">
           <h2 id="recent-title" class="recent__title">Recent colors</h2>
+          <button id="btn-clear" class="link-btn" type="button" hidden>Clear all</button>
         </div>
         <p id="recent-empty" class="recent__empty">Colors you pick will appear here.</p>
+        <ul id="recent-list" class="swatches" aria-label="Recent colors, click to copy"></ul>
       </section>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
     </main>
     <script type="module" src="./main.ts"></script>
   </body>

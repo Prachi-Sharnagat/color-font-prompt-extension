@@ -57,6 +57,19 @@ export const BASE_CSS = /* css */ `
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+/* While a screenshot is taken, hide every visible piece of UI. The capture
+   layer is transparent, so it stays active and keeps swallowing clicks. */
+.pt-layer.pt-capturing > :not(.pt-capture) { visibility: hidden !important; }
+
+.pt-text-btn {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--pt-border);
+  font-weight: 500;
+}
+.pt-text-btn:hover { background: var(--pt-hover); }
 
 button {
   font: inherit;

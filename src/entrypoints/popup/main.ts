@@ -1,6 +1,7 @@
 import { browser, type Browser } from 'wxt/browser';
 import type { ContentRequest, ToolMode } from '../../lib/messages';
 import { checkRestricted, restrictionMessage } from '../../lib/restricted';
+import { initRecentColors } from './recent';
 
 // The output path WXT gives the runtime-registered content script.
 const CONTENT_SCRIPT_FILE = '/content-scripts/content.js';
@@ -15,6 +16,22 @@ const notice = byId<HTMLParagraphElement>('notice');
 const pickerBtn = byId<HTMLButtonElement>('btn-picker');
 const fontBtn = byId<HTMLButtonElement>('btn-font');
 const toolButtons = [pickerBtn, fontBtn];
+const toastEl = byId<HTMLDivElement>('toast');
+
+let toastTimer: number | undefined;
+function showToast(message: string): void {
+  toastEl.textContent = message;
+  toastEl.classList.add('toast--show');
+  window.clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => toastEl.classList.remove('toast--show'), 1400);
+}
+
+initRecentColors({
+  list: byId<HTMLUListElement>('recent-list'),
+  empty: byId<HTMLParagraphElement>('recent-empty'),
+  clearBtn: byId<HTMLButtonElement>('btn-clear'),
+  showToast,
+});
 
 function showNotice(text: string): void {
   notice.textContent = text;

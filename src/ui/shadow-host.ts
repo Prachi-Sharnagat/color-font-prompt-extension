@@ -10,7 +10,10 @@ export interface ShadowUI {
   layer: HTMLDivElement;
   /** Add extra CSS (per component) into the shadow root. */
   addStyles(css: string): void;
-  /** Temporarily hide all UI, e.g. while taking a screenshot. */
+  /**
+   * Temporarily hide all visible UI while taking a screenshot. The transparent
+   * capture layer stays active so clicks never fall through to the page.
+   */
   setHidden(hidden: boolean): void;
 }
 
@@ -73,7 +76,7 @@ export function mountShadowHost(disposer: Disposer): ShadowUI {
     layer,
     addStyles,
     setHidden(hidden: boolean) {
-      host.style.setProperty('visibility', hidden ? 'hidden' : 'visible', 'important');
+      layer.classList.toggle('pt-capturing', hidden);
     },
   };
 }
